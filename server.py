@@ -3,30 +3,27 @@ import socket
 
 
 def server_program():
-    # get the hostname
-    host = socket.gethostname()
-    port = 5000  # initiate port no above 1024
+    host = socket.gethostname() # De esta forma se busca el nombre del host en el socket ya que es la misma computadora
+    port = 5000  # Puerto para establecer el socket
 
-    server_socket = socket.socket()  # get instance
-    # look closely. The bind() function takes tuple as argument
-    server_socket.bind((host, port))  # bind host address and port together
+    server_socket = socket.socket()  # Inicializa el socket
+    server_socket.bind((host, port))  # Se conecta al servidor por el socket
 
-    # configure how many client the server can listen simultaneously
+    # Configura cuantos clientes se puede escuchar simultaneamente
     server_socket.listen(2)
-    conn, address = server_socket.accept()  # accept new connection
-    print("Conectado desde: " + str(address))
+    conn, address = server_socket.accept()  # Acepta una nueva conexion, la cual se establecio el en cliente
+    print("Conectado desde: " + str(address)) # Muestra desde donde se realiza la conexion
     while True:
-        # receive data stream. it won't accept data packet greater than 1024 bytes
+        # Recibe la informacion que se envia. Se indica que no recibe data mas grande de 1024 bytes
         data = conn.recv(1024).decode()
         if not data:
-            # if data is not received break
             break
         print("Usuario conectado: " + str(data))
         data = input(' -> ')
-        conn.send(data.encode())  # send data to the client
+        conn.send(data.encode())  # Permite enviar datos al cliente
 
-    conn.close()  # close the connection
+    conn.close()  # Cierra el socket
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # Main que se ejecuta en primera instancia y llama al cliente
     server_program()
